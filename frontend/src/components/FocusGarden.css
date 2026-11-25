@@ -1,0 +1,1584 @@
+
+/* =========================================================
+   PLANNIX FOCUS GARDEN — MINIATURE LIVING WORLD
+   Replace the entire existing FocusGarden.css
+========================================================= */
+
+.focus-garden {
+  --fg-green: #4d8968;
+  --fg-green-dark: #2d6348;
+  --fg-cream: #f8faf5;
+  --fg-bark: #5e4034;
+  --fg-bark-light: #a58472;
+  --fg-leaf: #4c9a6a;
+  --fg-sky: #bce5f5;
+  --fg-ground: #83bf91;
+  --fg-pink: #ffc1d4;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: #294b38;
+  font-family: inherit;
+}
+
+/* ===== The scene itself is the hero. No inner cards ===== */
+.focus-garden .fg-world {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  height: 490px;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+  background: #bce5f5;
+  box-shadow: 0 18px 45px rgba(39, 74, 51, 0.10);
+  transition: background 2s ease;
+}
+
+.focus-garden .fg-world-content {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Time palettes ===== */
+.focus-garden .fg-sunrise {
+  --fg-sky-top: #f6c7cb;
+  --fg-sky-bottom: #b7dbe8;
+  --fg-sun-color: #ffe2ae;
+  --fg-hill-back: #b6d4bc;
+  --fg-hill-mid: #93c4a1;
+  --fg-ground: #83b990;
+  --fg-ground-dark: #5b936d;
+  --fg-bark: #5e4034;
+  --fg-bark-light: #a58472;
+  --fg-leaf: #4c9a6a;
+  --fg-text: #315440;
+}
+
+.focus-garden .fg-day {
+  --fg-sky-top: #c4eafa;
+  --fg-sky-bottom: #8ed2ee;
+  --fg-sun-color: #fff1b8;
+  --fg-hill-back: #b6e1c2;
+  --fg-hill-mid: #95d0ac;
+  --fg-ground: #82bd91;
+  --fg-ground-dark: #5c9870;
+  --fg-bark: #5e4034;
+  --fg-bark-light: #a58472;
+  --fg-leaf: #4c9a6a;
+  --fg-text: #315440;
+}
+
+.focus-garden .fg-golden {
+  --fg-sky-top: #f5c7a7;
+  --fg-sky-bottom: #f4aeb5;
+  --fg-sun-color: #ffcf8b;
+  --fg-hill-back: #c4c9a6;
+  --fg-hill-mid: #a8bc90;
+  --fg-ground: #8fae7e;
+  --fg-ground-dark: #65885f;
+  --fg-bark: #5e4034;
+  --fg-bark-light: #a58472;
+  --fg-leaf: #4c9a6a;
+  --fg-text: #344c39;
+}
+
+.focus-garden .fg-night {
+  --fg-sky-top: #182844;
+  --fg-sky-bottom: #394963;
+  --fg-sun-color: #d4dcff;
+  --fg-hill-back: #435b5a;
+  --fg-hill-mid: #36574e;
+  --fg-ground: #3c604c;
+  --fg-ground-dark: #294735;
+  --fg-bark: #a58472;
+  --fg-bark-light: #c4a18c;
+  --fg-leaf: #6fcb94;
+  --fg-text: #e3eddf;
+}
+
+/* ===== Ambient sky ===== */
+.focus-garden .fg-ambient {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.focus-garden .fg-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180, var(--fg-sky-top), var(--fg-sky-bottom) 85%);
+  transition: background 2.5s ease;
+}
+
+.focus-garden .fg-sky-glow {
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  top: -12%;
+  right: -6%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--fg-sun-color) 0%, transparent 70%);
+  opacity: 0.32;
+  filter: blur(28px);
+  transition: background 2s ease;
+}
+
+.focus-garden .fg-sun-moon {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  top: 68px;
+  right: 10%;
+  border-radius: 50%;
+  background: var(--fg-sun-color);
+  box-shadow:
+    0 0 20px 8px color-mix(in srgb, var(--fg-sun-color) 45%, transparent),
+    0 0 75px 30px color-mix(in srgb, var(--fg-sun-color) 20%, transparent);
+  transition: all 2s ease;
+  animation: fgSunFloat 8s ease-in-out infinite;
+}
+
+.focus-garden .fg-night .fg-sun-moon {
+  width: 58px;
+  height: 58px;
+  top: 62px;
+  right: 13%;
+  box-shadow:
+    0 0 25px 7px rgba(210, 220, 255, 0.12),
+    0 0 70px 24px rgba(210, 220, 255, 0.09);
+}
+
+.focus-garden .fg-night .fg-sun-moon::after {
+  content: "";
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--fg-sky-top);
+  top: -8px;
+  left: 17px;
+  opacity: 0.9;
+}
+
+.focus-garden .fg-rays {
+  position: absolute;
+  inset: -90px;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg 17deg,
+    rgba(255, 244, 198, 0.09) 18deg 21deg,
+    transparent 22deg 40deg
+  );
+  mask-image: radial-gradient(circle, black, transparent 68%);
+  animation: fgRayTurn 70s linear infinite;
+}
+
+.focus-garden .fg-night .fg-rays {
+  display: none;
+}
+
+.focus-garden .fg-stars {
+  position: absolute;
+  inset: 0;
+}
+
+.focus-garden .fg-stars i {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #eaf1ff;
+  border-radius: 50%;
+  box-shadow: 0 0 7px #c8d8ff;
+  animation: fgTwinkle 3s ease-in-out infinite;
+}
+
+.focus-garden .fg-clouds {
+  position: absolute;
+  width: 260px;
+  height: 70px;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.34;
+}
+
+.focus-garden .fg-clouds i {
+  position: absolute;
+  display: block;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+}
+
+.focus-garden .fg-clouds i:nth-child(1) {
+  width: 120px;
+  height: 55px;
+  left: 20px;
+  top: 18px;
+}
+
+.focus-garden .fg-clouds i:nth-child(2) {
+  width: 95px;
+  height: 70px;
+  left: 85px;
+  top: 0;
+}
+
+.focus-garden .fg-clouds i:nth-child(3) {
+  width: 130px;
+  height: 48px;
+  left: 120px;
+  top: 26px;
+}
+
+.focus-garden .fg-clouds-back {
+  top: 85px;
+  left: 10%;
+  animation: fgCloudDrift 80s linear infinite;
+}
+
+.focus-garden .fg-clouds-front {
+  top: 145px;
+  right: 12%;
+  transform: scale(0.7);
+  opacity: 0.22;
+  animation: fgCloudDriftReverse 110s linear infinite;
+}
+
+.focus-garden .fg-night .fg-clouds {
+  opacity: 0.09;
+}
+
+/* ===== Mountains and rolling hills ===== */
+.focus-garden .fg-mountains {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: 31%;
+  height: 40%;
+  opacity: 0.32;
+  background: var(--fg-hill-back);
+  clip-path: polygon(
+    0 100%, 0 70%, 9% 38%, 17% 65%, 25% 25%, 32% 58%,
+    43% 14%, 53% 54%, 64% 28%, 73% 62%, 85% 17%, 95% 54%, 100% 38%, 100% 100%
+  );
+  transition: background 2s ease;
+}
+
+.focus-garden .fg-hill {
+  position: absolute;
+  left: -12%;
+  width: 124%;
+  transition: background 2s ease;
+}
+
+.focus-garden .fg-hill-back {
+  bottom: 25%;
+  height: 29%;
+  background: linear-gradient(180, var(--fg-hill-back), color-mix(in srgb, var(--fg-hill-back) 60%, #ffffff));
+  border-radius: 48% 52% 0 0 / 60% 70% 0 0;
+  transform: rotate(-1deg);
+}
+
+.focus-garden .fg-hill-mid {
+  bottom: 13%;
+  height: 34%;
+  background: linear-gradient(180, var(--fg-hill-mid), var(--fg-ground));
+  border-radius: 45% 55% 0 0 / 35% 55% 0 0;
+  transform: rotate(2deg);
+}
+
+/* ===== Distant tree silhouettes ===== */
+.focus-garden .fg-distant-tree-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 29%;
+  height: 20%;
+  opacity: 0.2;
+  background:
+    radial-gradient(ellipse 22px 40px at 8% 65%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 25px 48px at 14% 68%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 19px 36px at 21% 65%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 25px 45px at 31% 65%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 18px 34px at 44% 65%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 28px 50px at 57% 65%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 20px 38px at 71% 65%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 25px 45px at 85% 65%, #476c5a 99%, transparent),
+    radial-gradient(ellipse 20px 38px at 94% 65%, #476c5a 99%, transparent);
+  filter: blur(4px);
+}
+
+/* ===== Ground and texture ===== */
+.focus-garden .fg-ground {
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: 0;
+  height: 27%;
+  background: linear-gradient(180, var(--fg-ground), var(--fg-ground-dark));
+  border-radius: 50% 50% 0 0 / 12% 12% 0 0;
+}
+
+.focus-garden .fg-ground-texture {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22%;
+  opacity: 0.28;
+  background-image:
+    radial-gradient(ellipse at 12% 70%, #d6e6ad 0 2px, transparent 3px),
+    radial-gradient(ellipse at 33% 43%, #526f45 0 1px, transparent 2px),
+    radial-gradient(ellipse at 54% 76%, #d9e7b6 0 2px, transparent 3px),
+    radial-gradient(ellipse at 71% 30%, #426d4a 0 1px, transparent 2px),
+    radial-gradient(ellipse at 88% 65%, #d3e6ad 0 2px, transparent 3px);
+  background-size: 110px 60px;
+}
+
+.focus-garden .fg-horizon-haze {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24%;
+  height: 15%;
+  background: linear-gradient(180, transparent, rgba(255, 240, 213, 0.16), transparent);
+  filter: blur(8px);
+}
+
+.focus-garden .fg-foreground-grass {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 48px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.focus-garden .fg-foreground-grass i {
+  width: 9px;
+  height: 27px;
+  border-radius: 100% 0;
+  background: color-mix(in srgb, var(--fg-ground-dark) 75%, #8bc38c);
+  transform-origin: bottom;
+  animation: fgGrassSway 4s ease-in-out infinite;
+}
+
+.focus-garden .fg-foreground-grass i:nth-child(2n) {
+  height: 37px;
+  animation-delay: -1.3s;
+}
+
+.focus-garden .fg-foreground-grass i:nth-child(3n) {
+  height: 19px;
+  animation-delay: -2.2s;
+}
+
+.focus-garden .fg-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90, rgba(29, 55, 42, 0.1), transparent 12%, transparent 88%, rgba(29, 55, 42, 0.12)),
+    linear-gradient(180, transparent 60%, rgba(45, 63, 44, 0.12));
+}
+
+.focus-garden .fg-light-rays {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    112deg,
+    transparent 0 14%,
+    rgba(255, 255, 225, 0.06) 15% 17%,
+    transparent 18% 31%
+  );
+  filter: blur(7px);
+  opacity: 0.65;
+  animation: fgRayShimmer 9s ease-in-out infinite alternate;
+}
+
+/* ===== Fireflies / butterflies / birds ===== */
+.focus-garden .fg-fireflies {
+  position: absolute;
+  inset: 0;
+}
+
+.focus-garden .fg-fireflies i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #ffe8a0;
+  border-radius: 50%;
+  box-shadow: 0 0 9px 3px rgba(255, 238, 157, 0.45);
+  opacity: 0;
+  animation: fgFirefly 7s ease-in-out infinite;
+}
+
+.focus-garden .fg-night .fg-fireflies i {
+  opacity: 0.6;
+}
+
+.focus-garden .fg-butterflies {
+  position: absolute;
+  inset: 0;
+}
+
+.focus-garden .fg-butterflies i {
+  position: absolute;
+  left: 28%;
+  top: 43%;
+  width: 8px;
+  height: 6px;
+  background: #fff4b9;
+  border-radius: 80% 0 80% 0;
+  opacity: 0.7;
+  animation: fgButterfly 15s ease-in-out infinite;
+}
+
+.focus-garden .fg-butterflies i:nth-child(2) {
+  left: 65%;
+  top: 36%;
+  animation-delay: -5s;
+  transform: scale(0.7);
+}
+
+.focus-garden .fg-butterflies i:nth-child(3) {
+  left: 50%;
+  top: 55%;
+  animation-delay: -9s;
+  transform: scale(0.6);
+}
+
+.focus-garden .fg-night .fg-butterflies {
+  display: none;
+}
+
+.focus-garden .fg-birds {
+  position: absolute;
+  left: -10%;
+  right: 0;
+  top: 20%;
+}
+
+.focus-garden .fg-birds i {
+  position: absolute;
+  width: 16px;
+  height: 6px;
+  border-top: 1.5px solid rgba(59, 87, 77, 0.55);
+  border-radius: 50%;
+  transform: rotate(-12deg);
+  animation: fgBirdFlight 28s linear infinite;
+}
+
+.focus-garden .fg-birds i:nth-child(2) {
+  top: 35px;
+  animation-delay: -12s;
+  transform: scale(0.7);
+}
+
+.focus-garden .fg-night .fg-birds {
+  opacity: 0.12;
+}
+
+/* ===== Header over the sky ===== */
+.focus-garden .fg-world-header {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 22px 24px 10px;
+  color: var(--fg-text);
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.35);
+}
+
+.focus-garden .fg-world-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.focus-garden .fg-world-title > svg {
+  color: #397a59;
+  filter: drop-shadow(0 2px 3px rgba(255, 255, 255, 0.35));
+}
+
+.focus-garden .fg-world-title h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+  color: inherit;
+}
+
+.focus-garden .fg-world-title p {
+  margin: 3px 0 0;
+  font-size: 12px;
+  opacity: 0.76;
+}
+
+.focus-garden .fg-world-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.23);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #397d5a;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.focus-garden .fg-night .fg-world-count {
+  color: #d8e9df;
+  background: rgba(24, 38, 60, 0.35);
+}
+
+/* ===== Scene track ===== */
+.focus-garden .fg-world-scene-wrap {
+  position: relative;
+  z-index: 4;
+  flex: 1;
+  min-height: 0;
+}
+
+.focus-garden .fg-world-scene {
+  position: absolute;
+  inset: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  outline: none;
+  cursor: grab;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+}
+
+.focus-garden .fg-world-scene::-webkit-scrollbar {
+  display: none;
+}
+
+.focus-garden .fg-world-scene.fg-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto !important;
+}
+
+.focus-garden .fg-world-plant-track {
+  position: relative;
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 0 90px 48px;
+  box-sizing: border-box;
+}
+
+.focus-garden .fg-world-plant-slot {
+  position: relative;
+  flex: 0 0 190px;
+  width: 190px;
+  height: 270px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transform-origin: bottom center;
+  transition: transform 0.4s ease;
+}
+
+.focus-garden .fg-world-plant-slot:hover {
+  z-index: 10 !important;
+}
+
+/* ===== Plant / tree artwork ===== */
+.focus-garden .fg-plant {
+  position: relative;
+  width: 100%;
+  height: 255px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible;
+  transform-origin: bottom center;
+  animation: fgTreeBreath 8s ease-in-out infinite;
+}
+
+.focus-garden .fg-plant-shadow {
+  position: absolute;
+  bottom: 10px;
+  width: 100px;
+  height: 17px;
+  background: radial-gradient(ellipse, rgba(39, 62, 41, 0.27), transparent 72%);
+  border-radius: 50%;
+  transform: scaleX(0.8);
+}
+
+.focus-garden .fg-tree-svg {
+  position: relative;
+  width: 190px;
+  height: 235px;
+  overflow: visible;
+  filter: drop-shadow(0 3px 4px rgba(43, 64, 39, 0.1));
+  transform-origin: bottom center;
+}
+
+.focus-garden .fg-trunk {
+  fill: var(--fg-bark);
+}
+
+.focus-garden .fg-bark-line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--fg-bark) 80%, #30251f);
+  stroke-width: 1.5;
+  opacity: 0.28;
+}
+
+.focus-garden .fg-branch,
+.focus-garden .fg-twig {
+  fill: none;
+  stroke: var(--fg-bark);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.focus-garden .fg-twig {
+  stroke-width: 3;
+}
+
+.focus-garden .fg-flower {
+  transform-origin: center;
+  animation: fgFlowerAppear 0.65s ease backwards, fgFlowerSway 5s ease-in-out infinite;
+  animation-delay: var(--flower-delay), calc(var(--flower-delay) + 0.7s);
+}
+
+.focus-garden .fg-blossom-glow {
+  opacity: 0.68;
+  filter: blur(1px);
+}
+
+.focus-garden .fg-sapling-art {
+  display: block;
+}
+
+.focus-garden .fg-grown .fg-sapling-art {
+  display: none;
+}
+
+.focus-garden .fg-sapling .fg-tree-svg {
+  width: 150px;
+  height: 185px;
+}
+
+.focus-garden .fg-sapling .fg-branch,
+.focus-garden .fg-sapling .fg-twig,
+.focus-garden .fg-sapling .fg-flower {
+  display: none;
+}
+
+.focus-garden .fg-sapling .fg-trunk {
+  opacity: 0;
+}
+
+.focus-garden .fg-sapling-stem {
+  fill: none;
+  stroke: var(--fg-leaf);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.focus-garden .fg-leaf {
+  fill: var(--fg-leaf);
+  transform-origin: 100px 180px;
+  animation: fgLeafSway 4.2s ease-in-out infinite;
+}
+
+.focus-garden .fg-leaf:nth-child(3) {
+  animation-delay: -1.2s;
+}
+
+.focus-garden .fg-leaf:nth-child(4) {
+  animation-delay: -2.1s;
+}
+
+.focus-garden .fg-bud {
+  fill: #ff9dba;
+  transform-origin: 103px 141px;
+  animation: fgBudPulse 3s ease-in-out infinite;
+}
+
+.focus-garden .fg-dew {
+  fill: #d9f4ff;
+  stroke: rgba(255, 255, 255, 0.65);
+  stroke-width: 0.8;
+  animation: fgDewSparkle 2.6s ease-in-out infinite;
+}
+
+.focus-garden .fg-root-grass {
+  fill: none;
+  stroke: #5c9b68;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  animation: fgGrassSway 4s ease-in-out infinite;
+}
+
+/* ===== Withering ===== */
+.focus-garden .fg-withered .fg-plant {
+  animation: fgWither 2.8s ease forwards;
+}
+
+.focus-garden .fg-withered .fg-leaf {
+  fill: #9a8a7e;
+}
+
+.focus-garden .fg-withered .fg-bud {
+  fill: #b9aca2;
+}
+
+.focus-garden .fg-withered .fg-sapling-stem,
+.focus-garden .fg-withered .fg-root-grass {
+  stroke: #9a8a7e;
+}
+
+.focus-garden .fg-withered .fg-plant-shadow {
+  opacity: 0.3;
+}
+
+.focus-garden .fg-dry-leaves {
+  position: absolute;
+  inset: 20% 15% 35%;
+  pointer-events: none;
+}
+
+.focus-garden .fg-dry-leaves i {
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  border-radius: 90% 0 90% 0;
+  background: #a99a8b;
+  animation: fgDryLeafFall 2.4s ease-in forwards;
+}
+
+.focus-garden .fg-dry-leaves i:nth-child(1) {
+  left: 25%;
+  top: 15%;
+}
+
+.focus-garden .fg-dry-leaves i:nth-child(2) {
+  left: 65%;
+  top: 35%;
+  animation-delay: 0.3s;
+}
+
+.focus-garden .fg-dry-leaves i:nth-child(3) {
+  left: 45%;
+  top: 10%;
+  animation-delay: 0.7s;
+}
+
+.focus-garden .fg-wilt-slot {
+  animation: fgSlotWilt 2.8s ease forwards;
+}
+
+.focus-garden .fg-fade-slot {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* ===== Plant name wooden signs ===== */
+.focus-garden .fg-wood-sign {
+  position: absolute;
+  z-index: 6;
+  bottom: 9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 120px;
+  min-height: 27px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgba(105, 71, 45, 0.4);
+  border-radius: 5px 4px 6px 3px;
+  color: #58412d;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 4px, rgba(126, 82, 45, 0.08) 5px 6px),
+    linear-gradient(135deg, #e6c79b, #cba87c 50%, #e2c193);
+  box-shadow: 0 3px 6px rgba(55, 52, 33, 0.22), inset 0 1px rgba(255, 255, 255, 0.45);
+  font-size: 10px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform-origin: bottom center;
+}
+
+.focus-garden .fg-wood-sign:hover,
+.focus-garden .fg-wood-sign:focus-visible {
+  transform: translateX(-50%) rotate(0deg) scale(1.1);
+  box-shadow: 0 5px 12px rgba(55, 52, 33, 0.24);
+  outline: none;
+}
+
+.focus-garden .fg-sign-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.focus-garden .fg-sign-check {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: #fff;
+  background: #4f966b;
+  border-radius: 50%;
+}
+
+.focus-garden .fg-sign-done {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 4px, rgba(126, 82, 45, 0.08) 5px 6px),
+    linear-gradient(135deg, #d8c28b, #b69a5e 50%, #d4bd84);
+}
+
+.focus-garden .fg-wood-sign::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -13px;
+  height: 15px;
+  width: 3px;
+  background: #876444;
+  border-radius: 0 0 2px 2px;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+
+.focus-garden .fg-achievement-slot {
+  opacity: 0.98;
+}
+
+/* ===== Falling blossom petals ===== */
+.focus-garden .fg-petal-layer {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.focus-garden .fg-petal {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 11px;
+  height: 8px;
+  border-radius: 90% 0 90% 0;
+  box-shadow: 0 1px 3px rgba(180, 100, 132, 0.15);
+  transform-origin: center;
+}
+
+.focus-garden .fg-petal-landed {
+  transform-origin: center;
+}
+
+/* ===== Navigation arrows ===== */
+.focus-garden .fg-world-arrow {
+  position: absolute;
+  z-index: 12;
+  top: 53%;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f9fff9;
+  background: rgba(50, 87, 64, 0.22);
+  backdrop-filter: blur(9px);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s, transform 0.2s;
+}
+
+.focus-garden .fg-world:hover .fg-world-arrow,
+.focus-garden .fg-world-arrow:focus-visible {
+  opacity: 1;
+}
+
+.focus-garden .fg-world-arrow:hover {
+  background: rgba(50, 87, 64, 0.55);
+  transform: scale(1.05);
+}
+
+.focus-garden .fg-world-arrow:disabled {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.focus-garden .fg-arrow-left {
+  left: 12px;
+}
+
+.focus-garden .fg-arrow-right {
+  right: 12px;
+}
+
+.focus-garden .fg-edge-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 55px;
+  z-index: 9;
+  pointer-events: none;
+}
+
+.focus-garden .fg-edge-left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent);
+}
+
+.focus-garden .fg-edge-right {
+  right: 0;
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0.14), transparent);
+}
+
+/* ===== Position indicator ===== */
+.focus-garden .fg-position-bar {
+  position: absolute;
+  z-index: 8;
+  left: 24px;
+  right: 24px;
+  bottom: 54px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.focus-garden .fg-position-track {
+  width: 100%;
+  height: 3px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.26);
+  overflow: hidden;
+}
+
+.focus-garden .fg-position-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.75);
+  transition: width 0.35s ease;
+}
+
+.focus-garden .fg-position-count {
+  font-size: 9px;
+  white-space: nowrap;
+  color: var(--fg-text);
+  opacity: 0.6;
+}
+
+/* ===== Floating seed input ===== */
+.focus-garden .fg-seed-dock {
+  position: relative;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 22px -22px;
+  padding: 9px 10px 9px 15px;
+  border-radius: 16px;
+  background: rgba(249, 252, 248, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 9px 24px rgba(41, 72, 50, 0.13);
+  backdrop-filter: blur(18px);
+}
+
+.focus-garden .fg-seed-dock > svg {
+  color: #4b9369;
+  flex-shrink: 0;
+}
+
+.focus-garden .fg-seed-dock input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #294a36;
+  font: inherit;
+  font-size: 13px;
+}
+
+.focus-garden .fg-seed-dock input::placeholder {
+  color: #78917d;
+}
+
+.focus-garden .fg-seed-dock button {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background: #5cb98b;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.focus-garden .fg-seed-dock button:hover {
+  background: #459e73;
+  transform: translateY(-1px);
+}
+
+/* ===== Task list, separate from the scene ===== */
+.focus-garden .fg-task-area {
+  position: relative;
+  padding: 22px 4px 0;
+  color: #304c38;
+}
+
+.focus-garden .fg-task-area-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.focus-garden .fg-task-area-heading h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -0.2px;
+}
+
+.focus-garden .fg-task-area-heading p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #839586;
+}
+
+.focus-garden .fg-task-area-heading > span {
+  font-size: 11px;
+  color: #75907c;
+  padding: 6px 10px;
+  background: #edf4ed;
+  border-radius: 20px;
+}
+
+.focus-garden .fg-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.focus-garden .fg-task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 13px;
+  background: #fff;
+  border: 1px solid #edf1ed;
+  border-radius: 13px;
+  box-shadow: 0 2px 8px rgba(48, 75, 54, 0.03);
+  transition: border 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.focus-garden .fg-task-item:hover {
+  border-color: #d4e5d7;
+  box-shadow: 0 5px 14px rgba(48, 75, 54, 0.06);
+  transform: translateY(-1px);
+}
+
+.focus-garden .fg-task-name {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  color: #3d5944;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.focus-garden .fg-task-name-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.focus-garden .fg-task-status-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #a6c6aa;
+  box-shadow: 0 0 0 3px #edf5ed;
+}
+
+.focus-garden .fg-task-check {
+  flex-shrink: 0;
+  color: #5ba77c;
+}
+
+.focus-garden .fg-task-completed .fg-task-name-text {
+  color: #95a99a;
+  text-decoration: line-through;
+}
+
+.focus-garden .fg-task-completed .fg-task-status-dot {
+  background: #60b98b;
+  box-shadow: 0 0 0 3px #e6f4eb;
+}
+
+.focus-garden .fg-task-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.focus-garden .fg-task-done-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 11px;
+  background: #59b888;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.focus-garden .fg-task-done-button:hover:not(:disabled) {
+  background: #439e70;
+  transform: translateY(-1px);
+}
+
+.focus-garden .fg-task-done-button:disabled {
+  background: #dcebe0;
+  color: #6e9d7e;
+  cursor: default;
+}
+
+.focus-garden .fg-task-delete-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #edf1ed;
+  border-radius: 8px;
+  background: #fff;
+  color: #8b9c8d;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border 0.2s;
+}
+
+.focus-garden .fg-task-delete-button:hover:not(:disabled) {
+  color: #c06f70;
+  background: #fff5f4;
+  border-color: #f0d8d5;
+}
+
+.focus-garden .fg-task-delete-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.focus-garden .fg-task-wilting {
+  opacity: 0.65;
+  filter: grayscale(0.4);
+}
+
+.focus-garden .fg-empty-garden {
+  min-height: 90px;
+  border: 1px dashed #d8e5d8;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #86a18c;
+}
+
+.focus-garden .fg-empty-garden p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.focus-garden .fg-garden-message {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #839886;
+  min-height: 17px;
+}
+
+.focus-garden .fg-undo-toast {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 13px;
+  border-radius: 12px;
+  background: #f1f6ed;
+  color: #57735e;
+  font-size: 12px;
+  animation: fgToastIn 0.25s ease;
+}
+
+.focus-garden .fg-undo-toast button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background: transparent;
+  color: #39825b;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+/* ===== Ambient animations ===== */
+@keyframes fgSunFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@keyframes fgRayTurn {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fgRayShimmer {
+  from { opacity: 0.35; transform: translateX(-2%); }
+  to { opacity: 0.75; transform: translateX(2%); }
+}
+
+@keyframes fgTwinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 0.95; transform: scale(1.2); }
+}
+
+@keyframes fgCloudDrift {
+  from { transform: translateX(-12%); }
+  to { transform: translateX(110%); }
+}
+
+@keyframes fgCloudDriftReverse {
+  from { transform: translateX(18%); }
+  to { transform: translateX(-110%); }
+}
+
+@keyframes fgGrassSway {
+  0%, 100% { transform: rotate(-9deg); }
+  50% { transform: rotate(10deg); }
+}
+
+@keyframes fgFirefly {
+  0%, 100% { transform: translate(0, 0); opacity: 0; }
+  30% { opacity: 0.8; }
+  55% { transform: translate(14px, -18px); opacity: 1; }
+  80% { opacity: 0.15; }
+}
+
+@keyframes fgButterfly {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(28px, -20px) rotate(12deg); }
+  50% { transform: translate(75px, -6px) rotate(-12deg); }
+  75% { transform: translate(38px, 17px) rotate(10deg); }
+}
+
+@keyframes fgBirdFlight {
+  0% { transform: translateX(0) translateY(0) rotate(-12deg); }
+  50% { transform: translateX(42vw) translateY(-18px) rotate(6deg); }
+  100% { transform: translateX(90vw) translateY(8px) rotate(-10deg); }
+}
+
+@keyframes fgTreeBreath {
+  0%, 100% { transform: rotate(-0.5deg); }
+  50% { transform: rotate(0.6deg); }
+}
+
+@keyframes fgFlowerAppear {
+  from { opacity: 0; transform: scale(0.2); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fgFlowerSway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+
+@keyframes fgLeafSway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(4deg); }
+}
+
+@keyframes fgBudPulse {
+  0%, 100% { transform: scale(0.9); }
+  50% { transform: scale(1.14); }
+}
+
+@keyframes fgDewSparkle {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes fgWither {
+  0% { transform: rotate(0deg); filter: none; }
+  40% { transform: rotate(8deg); filter: grayscale(0.3); }
+  100% { transform: rotate(17deg); filter: grayscale(0.8); opacity: 0.55; }
+}
+
+@keyframes fgSlotWilt {
+  0% { opacity: 1; }
+  75% { opacity: 0.65; }
+  100% { opacity: 0.35; }
+}
+
+@keyframes fgDryLeafFall {
+  0% { opacity: 0; transform: translate(0, 0) rotate(0); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(18px, 95px) rotate(220deg); }
+}
+
+@keyframes fgToastIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .focus-garden .fg-world {
+    height: 430px;
+    border-radius: 20px;
+  }
+
+  .focus-garden .fg-world-plant-track {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  .focus-garden .fg-world-plant-slot {
+    flex-basis: 165px;
+    width: 165px;
+  }
+
+  .focus-garden .fg-tree-svg {
+    width: 165px;
+  }
+
+  .focus-garden .fg-world-header {
+    padding: 18px 18px 8px;
+  }
+
+  .focus-garden .fg-position-bar {
+    left: 18px;
+    right: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .focus-garden {
+    gap: 14px;
+  }
+
+  .focus-garden .fg-world {
+    height: 365px;
+    border-radius: 17px;
+  }
+
+  .focus-garden .fg-world-title h2 {
+    font-size: 17px;
+  }
+
+  .focus-garden .fg-world-title p {
+    font-size: 10px;
+  }
+
+  .focus-garden .fg-world-title > svg {
+    width: 17px;
+  }
+
+  .focus-garden .fg-world-count {
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+
+  .focus-garden .fg-world-header {
+    padding: 14px 12px 5px;
+  }
+
+  .focus-garden .fg-world-plant-track {
+    padding: 0 38px 45px;
+    gap: 0;
+  }
+
+  .focus-garden .fg-world-plant-slot {
+    flex: 0 0 145px;
+    width: 145px;
+    height: 220px;
+  }
+
+  .focus-garden .fg-plant {
+    height: 215px;
+  }
+
+  .focus-garden .fg-tree-svg {
+    width: 145px;
+    height: 205px;
+  }
+
+  .focus-garden .fg-sapling .fg-tree-svg {
+    width: 125px;
+    height: 175px;
+  }
+
+  .focus-garden .fg-wood-sign {
+    width: 105px;
+    font-size: 9px;
+    bottom: 7px;
+  }
+
+  .focus-garden .fg-world-arrow {
+    width: 30px;
+    height: 30px;
+    top: 58%;
+    opacity: 0.85;
+  }
+
+  .focus-garden .fg-seed-dock {
+    margin: 0 10px -20px;
+    padding: 7px 7px 7px 10px;
+    gap: 7px;
+    border-radius: 13px;
+  }
+
+  .focus-garden .fg-seed-dock input {
+    font-size: 12px;
+  }
+
+  .focus-garden .fg-seed-dock button {
+    padding: 9px 10px;
+    font-size: 11px;
+  }
+
+  .focus-garden .fg-seed-dock button svg {
+    width: 13px;
+  }
+
+  .focus-garden .fg-task-area {
+    padding: 20px 1px 0;
+  }
+
+  .focus-garden .fg-task-item {
+    padding: 9px 10px;
+    gap: 8px;
+  }
+
+  .focus-garden .fg-task-name-text {
+    font-size: 12px;
+  }
+
+  .focus-garden .fg-task-done-button {
+    padding: 7px 9px;
+    font-size: 10px;
+  }
+
+  .focus-garden .fg-task-delete-button {
+    width: 30px;
+    height: 30px;
+  }
+
+  .focus-garden .fg-sun-moon {
+    width: 54px;
+    height: 54px;
+    top: 55px;
+  }
+
+  .focus-garden .fg-night .fg-sun-moon {
+    width: 48px;
+    height: 48px;
+    top: 50px;
+  }
+
+  .focus-garden .fg-position-bar {
+    left: 12px;
+    right: 12px;
+    bottom: 47px;
+  }
+
+  .focus-garden .fg-position-count {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .focus-garden .fg-world-count {
+    font-size: 9px;
+  }
+
+  .focus-garden .fg-world-title h2 {
+    font-size: 16px;
+  }
+
+  .focus-garden .fg-world-plant-slot {
+    flex-basis: 132px;
+    width: 132px;
+  }
+
+  .focus-garden .fg-seed-dock button span {
+    display: none;
+  }
+}
+
+/* Touch screens: navigation remains visible */
+@media (hover: none) {
+  .focus-garden .fg-world-arrow {
+    opacity: 0.75;
+  }
+}
+
+/* Accessibility: reduce ambient movement */
+@media (prefers-reduced-motion: reduce) {
+  .focus-garden *,
+  .focus-garden *::before,
+  .focus-garden *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

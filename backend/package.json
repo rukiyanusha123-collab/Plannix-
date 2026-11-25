@@ -1,0 +1,27 @@
+
+{
+  "name": "plannix-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "express": "*",
+    "mongoose": "*",
+    "bcryptjs": "*",
+    "jsonwebtoken": "*",
+    "dotenv": "*",
+    "cors": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "tsx": "*",
+    "@types/node": "*",
+    "@types/express": "*",
+    "@types/jsonwebtoken": "*",
+    "@types/cors": "*"
+  }
+}
